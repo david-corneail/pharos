@@ -17,6 +17,7 @@ import {
 } from '../base/overlay-element';
 import deepSelector from '../../utils/deepSelector';
 import { ifDefined } from 'lit/directives/if-defined';
+import { PharosHeading } from '../heading/pharos-heading';
 
 /**
  * Pharos coachmark component.
@@ -31,6 +32,7 @@ export class PharosCoachmark extends OverlayElement {
   static elementDefinitions = {
     'pharos-icon': PharosIcon,
     'pharos-button': PharosButton,
+    'pharos-heading': PharosHeading,
   };
 
   /**
@@ -241,7 +243,9 @@ export class PharosCoachmark extends OverlayElement {
     return html`
       <div class="coachmark__container" role="dialog" aria-hidden="${!this.open}">
         <div class="coachmark__header">
-          <span class="coachmark__heading"> ${this._renderHeading()} </span>
+          <pharos-heading class="coachmark__heading" level="2" preset="1--bold">
+            ${this._renderHeading()}
+          </pharos-heading>
           <pharos-button
             id="close-button"
             type="button"
