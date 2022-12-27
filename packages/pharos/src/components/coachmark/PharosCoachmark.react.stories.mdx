@@ -1,0 +1,22 @@
+import { Meta, Canvas, ArgsTable, Story } from '@storybook/addon-docs';
+
+import { PharosCoachmark } from '../../react-components/coachmark/pharos-coachmark';
+
+<Meta
+  title="Components/Coachmark"
+  parameters={{
+    component: PharosCoachmark,
+  }}
+/>
+
+# Coachmark
+
+<Canvas withToolbar>
+  <Story name="Base">
+    <PharosCoachmark />
+  </Story>
+</Canvas>
+
+## API
+
+<ArgsTable of={PharosCoachmark} />
