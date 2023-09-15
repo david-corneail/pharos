@@ -34,8 +34,37 @@ export class PharosIcon extends PharosElement {
   @property({ type: String, reflect: true })
   public description = '';
 
+  /**
+   * Indicates the aria-label to apply to the icon.
+   * @attr a11y-label
+   */
+  @property({ type: String, reflect: true, attribute: 'a11y-label' })
+  public a11yLabel?: string;
+
+  /**
+   * Indicates whether the icon should be hidden from assistive technology.
+   * @attr a11y-hidden
+   * @type {boolean}
+   */
+  @property({ type: Boolean, reflect: true, attribute: 'a11y-hidden' })
+  public a11yHidden = false;
+
   @state()
   private _svg = '';
+
+  protected override update(changedProperties: PropertyValues): void {
+    super.update && super.update(changedProperties);
+
+    if (!this.a11yHidden && !(this.description.length || this.a11yLabel)) {
+      throw new Error(
+        `All icons must have an accessible label or be marked as hidden to assistive technology.`
+      );
+    }
+
+    if (this.description.length) {
+      console.warn("The 'description' attribute is deprecated. Use 'a11y-label' instead.");
+    }
+  }
 
   public static override get styles(): CSSResultArray {
     return [iconStyles];
@@ -59,7 +88,7 @@ export class PharosIcon extends PharosElement {
 
   protected override render(): TemplateResult {
     const size = this._getIconSize();
-
+    const accessiblityLabel = this.a11yLabel ?? this.description;
     return html`
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -67,8 +96,8 @@ export class PharosIcon extends PharosElement {
         viewBox="0 0 ${size} ${size}"
         class="icon"
         role="img"
-        aria-hidden=${this.description === ''}
-        aria-label=${this.description || ''}
+        ${this.a11yHidden ? 'aria-hidden="true"' : ''}
+        aria-label=${accessiblityLabel}
         height="${size}"
         width="${size}"
         focusable="false"
